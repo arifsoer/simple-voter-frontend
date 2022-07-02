@@ -88,12 +88,15 @@
 </template>
 
 <script>
-import { ref } from '@nuxtjs/composition-api'
+import {useNuxtApp, ref} from '@nuxt/bridge'
 
 export default {
   name: 'LoginPage',
   layout: 'login',
   setup() {
+    // initialize
+    const { $api } = useNuxtApp()
+
     // field
     const form = ref(null)
     const email = ref('')
@@ -120,7 +123,12 @@ export default {
         v === password.value ||
         'Password confirmation need match with password',
     ]
-    const rules = { emailRules, usernameRules, passwordRules, passwordConfirmRules }
+    const rules = {
+      emailRules,
+      usernameRules,
+      passwordRules,
+      passwordConfirmRules,
+    }
 
     // mode
     const isLogin = ref(true)
@@ -130,11 +138,18 @@ export default {
     }
 
     // submit handler
-    const submitHandler = () => {
+    const submitHandler = async () => {
       const result = form.value.validate()
       if (result) {
+        try {
+          if (isLogin) {
+          const login = await $api.post('/user/register')
+          console.log(login.data)
+        }
+        } catch (error) {
+
+        }
         // submit value to server
-        console.log('lets submit to server')
       }
     }
 
@@ -147,7 +162,7 @@ export default {
       isLogin,
       changeLogin,
       rules,
-      submitHandler
+      submitHandler,
     }
   },
 }
