@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import {useNuxtApp, ref} from '@nuxt/bridge'
+import {useNuxtApp, ref} from '@nuxtjs/composition-api'
 
 export default {
   name: 'LoginPage',
